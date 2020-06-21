@@ -1,0 +1,8 @@
+apply plugin: 'org.springframework.boot'
+
+dependencies {
+    compile "org.springframework.boot:spring-boot-starter-web"
+    compile project(":baby-profile-service:baby-profile-api")
+
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}
