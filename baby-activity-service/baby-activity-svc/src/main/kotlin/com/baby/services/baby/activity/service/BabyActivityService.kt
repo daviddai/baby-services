@@ -17,7 +17,7 @@ class BabyActivityService {
 
     fun addBabyActivity(createBabyActivityRequest: CreateBabyActivityRequest): BabyActivityDto {
         val babyActivityDto = convertToBabyActivityDto(createBabyActivityRequest)
-        val babyProfileRefToActivities = babyActivityLookup.getOrDefault(createBabyActivityRequest.babyProfileRef, mutableMapOf())
+        val babyProfileRefToActivities = babyActivityLookup.getOrPut(createBabyActivityRequest.babyProfileRef){ mutableMapOf() }
         babyProfileRefToActivities[babyActivityDto.id] = babyActivityDto
         return babyActivityDto
     }
