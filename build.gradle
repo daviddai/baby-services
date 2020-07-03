@@ -30,6 +30,8 @@ subprojects {
     dependencies {
         compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"    // Required for Kotlin integration
         compile 'com.fasterxml.jackson.module:jackson-module-kotlin:2.11.0'
+        compile 'io.projectreactor:reactor-core:3.3.7.RELEASE'
+
 
         testCompile('org.junit.jupiter:junit-jupiter-engine:5.6.2')
     }
