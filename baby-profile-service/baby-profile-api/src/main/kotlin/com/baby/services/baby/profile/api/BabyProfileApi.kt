@@ -1,7 +1,7 @@
 package com.baby.services.baby.profile.api
 
 import com.baby.services.baby.profile.model.http.request.CreateBabyProfileRequest
-import com.baby.services.baby.profile.model.http.response.BabyProfileDto
+import com.baby.services.baby.profile.model.dto.BabyProfileDto
 import org.springframework.web.bind.annotation.*
 
 @RequestMapping("/profile")
