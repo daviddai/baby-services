@@ -3,6 +3,7 @@ package com.baby.services.baby.profile.service
 import com.baby.services.baby.profile.model.http.request.CreateBabyProfileRequest
 import com.baby.services.baby.profile.model.dto.BabyProfileDto
 import org.springframework.stereotype.Service
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.core.publisher.toMono
 import java.util.*
@@ -34,7 +35,7 @@ class BabyProfileService {
 
     fun findBabyProfile(id: Long): Mono<BabyProfileDto?> = Mono.justOrEmpty(babyProfilesLookup[id])
 
-    fun getAllProfiles(): List<BabyProfileDto> = babyProfilesLookup.values.toList()
+    fun getAllProfiles(): Flux<BabyProfileDto> = Flux.fromIterable(babyProfilesLookup.values)
 
     fun removeBabyProfileById(id: Long) {
         babyProfilesLookup.remove(id)
