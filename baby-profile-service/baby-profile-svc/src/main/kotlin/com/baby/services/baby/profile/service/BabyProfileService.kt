@@ -3,6 +3,8 @@ package com.baby.services.baby.profile.service
 import com.baby.services.baby.profile.model.http.request.CreateBabyProfileRequest
 import com.baby.services.baby.profile.model.dto.BabyProfileDto
 import org.springframework.stereotype.Service
+import reactor.core.publisher.Mono
+import reactor.core.publisher.toMono
 import java.util.*
 import java.util.concurrent.atomic.AtomicLong
 
@@ -14,7 +16,7 @@ class BabyProfileService {
         var babyProfilesLookup = mutableMapOf<Long, BabyProfileDto>()
     }
 
-    fun createNewBabyProfile(createBabyProfileRequest: CreateBabyProfileRequest): BabyProfileDto {
+    fun createNewBabyProfile(createBabyProfileRequest: CreateBabyProfileRequest): Mono<BabyProfileDto> {
         val babyProfileDto = BabyProfileDto(
             counter.getAndIncrement(),
             UUID.randomUUID().toString(),
@@ -27,10 +29,10 @@ class BabyProfileService {
 
         babyProfilesLookup[babyProfileDto.id] = babyProfileDto
 
-        return babyProfileDto
+        return Mono.just(babyProfileDto)
     }
 
-    fun findBabyProfile(id: Long): BabyProfileDto? = babyProfilesLookup[id]
+    fun findBabyProfile(id: Long): Mono<BabyProfileDto?> = Mono.justOrEmpty(babyProfilesLookup[id])
 
     fun getAllProfiles(): List<BabyProfileDto> = babyProfilesLookup.values.toList()
 

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
+import reactor.core.publisher.Mono
 
 @RestController
 @RequestMapping("/profile")
@@ -17,13 +18,11 @@ class BabyProfileController: BabyProfileApi {
     private lateinit var babyProfileService: BabyProfileService
 
     @PostMapping("/add")
-    override fun add(@RequestBody createBabyProfileRequest: CreateBabyProfileRequest): BabyProfileDto =
+    override fun add(@RequestBody createBabyProfileRequest: CreateBabyProfileRequest): Mono<BabyProfileDto> =
         babyProfileService.createNewBabyProfile(createBabyProfileRequest)
 
     @GetMapping("/{id}")
-    override fun getById(@PathVariable("id") id: Long): BabyProfileDto? = babyProfileService.findBabyProfile(id) ?: throw ResponseStatusException(
-        HttpStatus.NOT_FOUND, "Baby profile $id cannot be found"
-    )
+    override fun getById(@PathVariable("id") id: Long): Mono<BabyProfileDto?> = babyProfileService.findBabyProfile(id)
 
     @GetMapping("/all")
     override fun getAll(): List<BabyProfileDto> =
