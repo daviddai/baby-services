@@ -6,8 +6,11 @@ import com.baby.services.baby.activity.model.http.request.CreateBabyActivityRequ
 import com.baby.services.baby.activity.service.BabyActivityService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 
 @RestController
 @RequestMapping("/activity")
@@ -17,18 +20,16 @@ class BabyActivityController: BabyActivityApi {
     private lateinit var babyActivityService: BabyActivityService
 
     @PostMapping("/add")
-    override fun add(createBabyActivityRequest: CreateBabyActivityRequest): BabyActivityDto =
-        babyActivityService.addBabyActivity(createBabyActivityRequest)
+    override fun add(createBabyActivityRequest: CreateBabyActivityRequest): ResponseEntity<Mono<BabyActivityDto>> =
+        ResponseEntity.ok(babyActivityService.addBabyActivity(createBabyActivityRequest))
 
     @GetMapping("/{babyProfileRef}/{id}")
     override fun getByBabyProfileRefAndActivityId(@PathVariable("babyProfileRef") babyProfileRef: String,
-                                                  @PathVariable("id") id: Long): BabyActivityDto? =
-        babyActivityService.findBabyActivity(babyProfileRef, id)?:
-        throw ResponseStatusException(HttpStatus.NOT_FOUND, "Baby activity for baby profile ref $babyProfileRef activity id $id not found")
+                                                  @PathVariable("id") id: Long): ResponseEntity<Mono<BabyActivityDto>> =
+        ResponseEntity.ok(babyActivityService.findBabyActivity(babyProfileRef, id))
 
     @GetMapping("/{babyProfileRef}/all")
-    override fun getAllByBabyProfileRef(@PathVariable("babyProfileRef") babyProfileRef: String): List<BabyActivityDto>? =
-        babyActivityService.findAllBabyActivity(babyProfileRef)?:
-        throw ResponseStatusException(HttpStatus.NOT_FOUND, "Baby activities for $babyProfileRef not found")
+    override fun getAllByBabyProfileRef(@PathVariable("babyProfileRef") babyProfileRef: String): ResponseEntity<Flux<BabyActivityDto>> =
+        ResponseEntity.ok(babyActivityService.findAllBabyActivity(babyProfileRef))
 
 }
